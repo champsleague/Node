@@ -88,7 +88,9 @@ var app = http.createServer(function(request,response){
             var template = templateHTML(title,list,
               `<h2>${title}</h2>${description}`,
               `<a href="/create">create</a> 
-              <a href="/update?id=${title}">update</a>`
+               <a href="/update?id=${title}">update</a>
+               <a href="/delete?id=${title}">delete</a>
+              `
               );
 
           response.writeHead(200);
@@ -96,8 +98,9 @@ var app = http.createServer(function(request,response){
           })
         })
       }
-  
      } 
+
+    //  create
      else if(pathname==="/create"){
       fs.readdir('../data',function(error,filelist){
         var title = 'web-create';
@@ -135,6 +138,8 @@ var app = http.createServer(function(request,response){
         })
       })
     }
+
+    // update
     else if(pathname==='/update'){
       fs.readdir('../data',function(error,filelist){
         console.log(filelist)
@@ -164,6 +169,27 @@ var app = http.createServer(function(request,response){
       response.end(template);
       })
     })
+    }
+
+    // update_process
+    else if(pathname==='/update_process'){
+      var body = ''
+      request.on('data',function(data){
+        body +=data;
+      })
+      request.on('end',function(){
+        var post = qs.parse(body)
+        var id = post.id
+        var title = post.title
+        var description = post.description
+        fs.rename(`../data/${id}`,`../data/${title}`,function(err){
+          fs.writeFile(`../data/${title}`,description,'utf-8',function(err){
+            response.writeHead(302,{Location: `/?id=${title}`});
+            // port 302 : redirection
+            response.end();
+          })
+        })
+      })
     }
   
      else{
