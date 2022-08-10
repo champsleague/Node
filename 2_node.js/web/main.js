@@ -97,7 +97,7 @@ var app = http.createServer(function(request,response){
         var list = templateList(filelist)
         var template = templateHTML(title,list,
           `
-          <form action="http://localhost:3000/process_create" method="post">
+          <form action="http://localhost:3000/create_process" method="post">
           <p><input type="text" name="title" placeholder="title"></p>
           <p>
             <textarea name="description" placeholder="description"></textarea>
@@ -120,10 +120,13 @@ var app = http.createServer(function(request,response){
         var post = qs.parse(body)
         var title = post.title
         var description = post.description
-        console.log(post.description)
+        
+        fs.writeFile(`../data/${title}`,description,'utf-8',function(err){
+          response.writeHead(302,{Location: `/?id=${title}`});
+          // port 302 : redirection
+          response.end();
+        })
       })
-      response.writeHead(200);
-      response.end('success');
     }
   
      else{
