@@ -4,6 +4,7 @@ var url = require('url');
 var qs = require('querystring')
 
 var template = require('../lib/template.js')
+var sanitizeHtml = require('sanitize-html')
 
 // refactoring
 
@@ -102,14 +103,16 @@ var app = http.createServer(function(request,response){
        
           fs.readFile(`../data/${queryData.id}`,'utf-8',function(err,description){
             var title = queryData.id;
+            var sanitizedTitle = sanitizeHtml(title);
+            var sanitizedDescription = sanitizeHtml(description);
             var list = template.list(filelist)
-            var html = template.HTML(title,list,
-              `<h2>${title}</h2>${description}`,
+            var html = template.HTML(sanitizedTitle,list,
+              `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
               `<a href="/create">create</a> 
-               <a href="/update?id=${title}">update</a>
+               <a href="/update?id=${sanitizedTitle}">update</a>
 
                <form action="delete_process" method="post">
-               <input type="hidden" name="id" value="${title}">
+               <input type="hidden" name="id" value="${sanitizedTitle}">
                <input type="submit" value="delete">
                </form>
               `
