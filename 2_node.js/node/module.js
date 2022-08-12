@@ -1,8 +1,12 @@
-var M = {
-    v:'va',
-    f:function(){
-        console.log(this.v)
-    }
-}
+// var M = {
+//     v:'va',
+//     f:function(){
+//         console.log(this.v)
+//     }
+// }
 
-M.f();
+var part = require('./mpart.js')
+console.log(part)
+
+// M.f();
+part.f()
