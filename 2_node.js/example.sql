@@ -2,7 +2,9 @@
 -- Table structure for table `author`
 --
  
- 
+-- DATABASE -> USE YKJSQL
+
+
 CREATE TABLE `author` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
