@@ -3,7 +3,7 @@ var fs = require('fs');
 var url = require('url');
 var qs = require('querystring')
 
-var template = require('./lib/template.js')
+var template = require('../lib/template.js')
 var sanitizeHtml = require('sanitize-html')
 
 // refactoring
