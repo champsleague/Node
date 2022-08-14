@@ -3,20 +3,12 @@ var fs = require('fs');
 var url = require('url');
 var qs = require('querystring')
 
-var template = require('./lib/template.js')
+var template = require('../lib/template.js')
 var sanitizeHtml = require('sanitize-html')
-
-var db = require('mysql')
-mysql.createConnection({
-  host:'localhost',
-  user:'root',
-  password:'007007',
-  database:'YKJSQL'
-})
 
 // refactoring
 
-db.connect();
+
 
 function templateHTML(title,list,body,control){
   return `
@@ -56,11 +48,11 @@ var app = http.createServer(function(request,response){
          
           // fs.readFile(`../data/${queryData.id}`,'utf-8',function(err,description){
            
-          // fs.readdir('../data',function(error,filelist){
-          //     console.log(filelist)
+          fs.readdir('../data',function(error,filelist){
+              console.log(filelist)
 
-          // var title = 'welcome';
-          // var description = 'hello node'
+          var title = 'welcome';
+          var description = 'hello node'
 
           // var list = <ul>
           // <li><a href="/?id=HTML">HTML</a></li>
@@ -90,24 +82,18 @@ var app = http.createServer(function(request,response){
 
 
 
-          // var list = template.list(filelist)
-          // var html = template.HTML(title,list,
-          //   `<h2>${title}</h2>${description}`,
-          //   `<a href="/create">create</a>`
-          //   );
-          // response.writeHead(200);
-          // response.end(html);
+          var list = template.list(filelist)
+          var html = template.HTML(title,list,
+            `<h2>${title}</h2>${description}`,
+            `<a href="/create">create</a>`
+            );
+          response.writeHead(200);
+          response.end(html);
 
-          // })
+          })
 
           
           // })
-
-          db.query(`SELECT * FROM topic`,function(err,topics){
-            console.log(topics);
-            response.writeHead(200);
-            response.end('success');
-          })
         }
 
 
