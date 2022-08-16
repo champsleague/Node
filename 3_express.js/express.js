@@ -10,6 +10,12 @@ var compression = require('compression')
 
 app.use(bodyparser.urlencoded ({extended:false}))
 app.use(compression())
+app.get('*',function(request,response,next){
+    fs.readdir('./data', function(error, filelist){
+        request.list = filelist;
+        next()
+    })
+})
 
 // route, routing
 // app.get('/',(req,res)=> res.send('hi'))
@@ -17,7 +23,7 @@ app.get('/',function(request,response) {
     fs.readdir('./data', function(error, filelist){
         var title = 'Welcome';
         var description = 'Hello, Node.js';
-        var list = template.list(filelist);
+        var list = template.list(requset.list);
         var html = template.HTML(title, list,
           `<h2>${title}</h2>${description}`,
           `<a href="/create">create</a>`
@@ -37,7 +43,7 @@ app.get('/page/:pageId',function(request,response) {
           var sanitizedDescription = sanitizeHtml(description, {
             allowedTags:['h1']
           });
-          var list = template.list(filelist);
+          var list = template.list(request.list);
           var html = template.HTML(sanitizedTitle, list,
             `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
             ` <a href="/create">create</a>
@@ -57,7 +63,7 @@ app.get('/page/:pageId',function(request,response) {
 app.get('/create',function(req,res){
     fs.readdir('./data', function(error, filelist){
         var title = 'WEB - create';
-        var list = template.list(filelist);
+        var list = template.list(request.list);
         var html = template.HTML(title, list, `
           <form action="/create_process" method="post">
             <p><input type="text" name="title" placeholder="title"></p>
@@ -113,7 +119,7 @@ app.get('/update/:pageId',function(request,response){
         var filteredId = path.parse(request.params.pageId).base;
         fs.readFile(`data/${filteredId}`, 'utf8', function(err, description){
           var title = request.params.pageId;
-          var list = template.list(filelist);
+          var list = template.list(request.list);
           var html = template.HTML(title, list,
             `
             <form action="/update_process" method="post">
