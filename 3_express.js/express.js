@@ -8,6 +8,7 @@ var qs = require('querystring')
 var bodyparser = require('body-parser')
 var compression = require('compression')
 
+app.use(express.static('public'))
 app.use(bodyparser.urlencoded ({extended:false}))
 app.use(compression())
 app.get('*',function(request,response,next){
@@ -23,9 +24,11 @@ app.get('/',function(request,response) {
     fs.readdir('./data', function(error, filelist){
         var title = 'Welcome';
         var description = 'Hello, Node.js';
-        var list = template.list(requset.list);
+        var list = template.list(request.list);
         var html = template.HTML(title, list,
-          `<h2>${title}</h2>${description}`,
+          `<h2>${title}</h2>${description}
+          <img src="/img/paris.jpg" style="width:500px; display:block;">`
+          ,
           `<a href="/create">create</a>`
         );
         response.send(html);
