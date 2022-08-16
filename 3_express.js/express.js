@@ -6,8 +6,10 @@ var path = require('path')
 var sanitizeHtml = require('sanitize-html')
 var qs = require('querystring')
 var bodyparser = require('body-parser')
+var compression = require('compression')
 
 app.use(bodyparser.urlencoded ({extended:false}))
+app.use(compression())
 
 // route, routing
 // app.get('/',(req,res)=> res.send('hi'))
