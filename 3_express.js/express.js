@@ -4,6 +4,7 @@ var fs = require("fs")
 var template = require('./lib/template.js')
 var path = require('path')
 var sanitizeHtml = require('sanitize-html')
+var qs = require('querystring')
 
 // route, routing
 // app.get('/',(req,res)=> res.send('hi'))
@@ -46,5 +47,47 @@ app.get('/page/:pageId',function(request,response) {
       });
     })
 
-app.listen(3000,()=> 
-console.log("app listening on port 3000"))
+
+app.get('/create',function(req,res){
+    fs.readdir('./data', function(error, filelist){
+        var title = 'WEB - create';
+        var list = template.list(filelist);
+        var html = template.HTML(title, list, `
+          <form action="/create_process" method="post">
+            <p><input type="text" name="title" placeholder="title"></p>
+            <p>
+              <textarea name="description" placeholder="description"></textarea>
+            </p>
+            <p>
+              <input type="submit">
+            </p>
+          </form>
+        `, '');
+        res.send(html);
+      });
+}) 
+
+
+app.post('/create_process',function(request,response){
+    var body = '';
+    request.on('data', function(data){
+        body = body + data;
+    });
+    request.on('end', function(){
+        var post = qs.parse(body);
+        var id = post.id;
+        var title = post.title;
+        var description = post.description;
+        fs.rename(`data/${id}`, `data/${title}`, function(error){
+          fs.writeFile(`data/${title}`, description, 'utf8', function(err){
+            response.writeHead(302, {Location: `/?id=${title}`});
+            response.end();
+          })
+        });
+    });
+})
+
+
+app.listen(3000,function(){
+console.log("app listening on port 3000")
+})
