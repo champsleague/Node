@@ -5,6 +5,7 @@ var template = require('./lib/template.js')
 var path = require('path')
 var sanitizeHtml = require('sanitize-html')
 var qs = require('querystring')
+var bodyparser = require('body-parser')
 
 // route, routing
 // app.get('/',(req,res)=> res.send('hi'))
