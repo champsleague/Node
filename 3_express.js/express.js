@@ -37,7 +37,7 @@ app.get('/page/:pageId',function(request,response) {
             `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
             ` <a href="/create">create</a>
               <a href="/update/${sanitizedTitle}">update</a>
-              <form action="delete_process" method="post">
+              <form action="/delete_process" method="post">
                 <input type="hidden" name="id" value="${sanitizedTitle}">
                 <input type="submit" value="delete">
               </form>`
@@ -46,6 +46,7 @@ app.get('/page/:pageId',function(request,response) {
         });
       });
     })
+
 
 // CREATE
 app.get('/create',function(req,res){
@@ -130,12 +131,32 @@ app.post('/update_process',function(response,request){
           var description = post.description;
           fs.rename(`data/${id}`, `data/${title}`, function(error){
             fs.writeFile(`data/${title}`, description, 'utf8', function(err){
-              response.writeHead(302, {Location: `/?id=${title}`});
-              response.end();
+              response.redirect('/?id=${title}')
             })
           });
       });
 })
+
+
+// DELETE
+app.post('/delete_process',function(response,request){
+    var body = '';
+      request.on('data', function(data){
+          body = body + data;
+      });
+      request.on('end', function(){
+          var post = qs.parse(body);
+          var id = post.id;
+          var title = post.title;
+          var description = post.description;
+          fs.rename(`data/${id}`, `data/${title}`, function(error){
+            fs.writeFile(`data/${title}`, description, 'utf8', function(err){
+              response.redirect('/');
+            })
+          });
+      });
+})
+
 
 app.listen(3000,function(){
 console.log("app listening on port 3000")
