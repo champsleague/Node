@@ -5,8 +5,10 @@ var path = require('path')
 var sanitizeHtml = require('sanitize-html')
 var bodyparser = require('body-parser')
 var compression = require('compression')
-var topicRouter = require('./routes/topic.js')
+var topicRouter = require('./routes/topic')
 var indexRouter = require('./routes/index')
+// var template = require('./lib/template.js')
+
 
 app.use(express.static('public'))
 app.use(bodyparser.urlencoded ({extended:false}))

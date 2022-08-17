@@ -1,10 +1,11 @@
 var express = require('express')
 var router = express.Router();
-var template = require('./lib/template.js')
+var template = require('../lib/template.js')
+var fs = require("fs")
 
 
 router.get('/',function(request,response) {
-    fs.readdir('./data', function(error, filelist){
+    fs.readdir('../data', function(error, filelist){
         var title = 'Welcome';
         var description = 'Hello, Node.js';
         var list = template.list(request.list);
