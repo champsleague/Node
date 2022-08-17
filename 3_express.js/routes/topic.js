@@ -4,7 +4,6 @@ var path = require('path');
 var fs = require('fs');
 var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template.js');
-var topicRouter = require('./routes/topic')
  
 router.get('/create', function(request, response){
     var title = 'WEB - create';

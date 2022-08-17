@@ -1,14 +1,12 @@
 var express = require('express')
 var app = express()
 var fs = require("fs")
-var template = require('./lib/template.js')
 var path = require('path')
 var sanitizeHtml = require('sanitize-html')
-var qs = require('querystring')
 var bodyparser = require('body-parser')
 var compression = require('compression')
-var topicRouter = require('./routes/topic')
-
+var topicRouter = require('./routes/topic.js')
+var indexRouter = require('./routes/index')
 
 app.use(express.static('public'))
 app.use(bodyparser.urlencoded ({extended:false}))
@@ -19,7 +17,14 @@ app.get('*',function(request,response,next){
         next()
     })
 })
+app.use('/',indexRouter)
 app.use('/topic',topicRouter)
+
+
+
+
+
+
 
 
 // route, routing
