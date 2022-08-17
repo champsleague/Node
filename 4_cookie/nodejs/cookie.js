@@ -1,15 +1,14 @@
-var http = require('http')
-var cookie = require('cookie')
-http.createServer(function(request,response){
-    console.log(request.headers.cookie)
-
-    var cookies={}
+var http = require('http');
+var cookie = require('cookie');
+http.createServer(function(request, response){
+    console.log(request.headers.cookie);
+    var cookies = {};
     if(request.headers.cookie !== undefined){
-        cookies = cookie.parse(request.headers.cookie)
+        cookies = cookie.parse(request.headers.cookie);
     }
-
-    response.writeHead(200,{
-        'Set-Cookie' : ['yummy_cookie=choco','tasty_cookie=strawberry']
-    })
-    response.end('Cookie')
-}).listen(3000)
+    console.log(cookies.yummy_cookie);
+    response.writeHead(200, {
+        'Set-Cookie':['yummy_cookie=choco', 'tasty_cookie=strawberry']
+    });
+    response.end('Cookie!!');
+}).listen(3000);
