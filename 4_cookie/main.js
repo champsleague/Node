@@ -5,11 +5,22 @@ var qs = require('querystring');
 var template = require('./lib/template.js');
 var path = require('path');
 var sanitizeHtml = require('sanitize-html');
+var cookie = require('cookie')
 
 var app = http.createServer(function(request,response){
     var _url = request.url;
     var queryData = url.parse(_url, true).query;
     var pathname = url.parse(_url, true).pathname;
+    var isOwner = false;
+    var cookies={}
+    if(request.headers.cookie){
+      cookies = cookie.parse(request.headers.cookie)
+    }
+
+    if(cookies.email==='hermeskj0217@gmail.com' && cookies.password === '11111111'){
+      isOwner=true
+    }
+
     if(pathname === '/'){
       if(queryData.id === undefined){
         fs.readdir('./data', function(error, filelist){
