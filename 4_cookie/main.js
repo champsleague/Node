@@ -166,8 +166,12 @@ var app = http.createServer(function(request,response){
               ],
               Location: `/`
             });
+            response.end();
           }
-          response.end();
+          else{
+            response.end('denied user')
+          }
+          
       });
     }
     
