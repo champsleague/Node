@@ -7,6 +7,8 @@ var sanitizeHtml = require('sanitize-html')
 var qs = require('querystring')
 var bodyparser = require('body-parser')
 var compression = require('compression')
+var topicRouter = require('./routes/topic')
+
 
 app.use(express.static('public'))
 app.use(bodyparser.urlencoded ({extended:false}))
@@ -17,6 +19,8 @@ app.get('*',function(request,response,next){
         next()
     })
 })
+app.use('/topic',topicRouter)
+
 
 // route, routing
 // app.get('/',(req,res)=> res.send('hi'))
@@ -184,7 +188,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!')
   })
 
-  
+
 app.listen(3000,function(){
 console.log("app listening on port 3000")
 })
